@@ -145,7 +145,7 @@ elif page_state == "成績入力/出力":
         if not df.empty:
             # ユーザーID列を非表示にして成績データを表示
             st.subheader("データフレーム")
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df.set_index("ID"), use_container_width=True)
         elif st.session_state.username:
             st.write("データがありません")
         else:
