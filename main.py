@@ -145,7 +145,7 @@ elif page_state == "成績入力/出力":
         if not df.empty:
             # ユーザーID列を非表示にして成績データを表示
             st.subheader("データフレーム")
-            st.dataframe(df.drop(columns=["ID"]), use_container_width=True)
+            st.dataframe(df, use_container_width=True)
         elif st.session_state.username:
             st.write("データがありません")
         else:
@@ -212,13 +212,18 @@ elif page_state == "分析":
             score_min = df["得点"].min()
 
             def per_match(number):
-                return round((number / match_count_exist_rank) * 100, 2)
+                try:
+                    number = float(number)
+                    return round((number / match_count_exist_rank) * 100, 2)
+                except:
+                    return None
+                
 
             rentai = df[df["着順"] < 3]["着順"].count()
             last_avoid = 100 - per_match(match_count_4th)
 
-            mean = round(df["得点"].mean(), 3)
-            std = round(df["得点"].std(), 3)
+            mean = round(df["得点"].mean(), 2)
+            std = round(df["得点"].std(), 2)
             rank_mean = round(df["着順"].mean(), 2)  # 順位があるところのみで計算
 
             data_analysis = [
